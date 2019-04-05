@@ -14,21 +14,23 @@ class SelectorFragment : BottomSheetDialogFragment() {
     var data: ArrayList<String> = arrayListOf()
         set(value) {
             field = value
-            binding!!.textPicker.setData(value)
+            if (binding != null)  binding!!.textPicker.setData(value)
         }
 
     var position = -1
         set(value) {
             field = value
-            binding!!.textPicker.value = value
+            if (binding != null) binding!!.textPicker.value = value
         }
 
     var size = 18f
         set(value) {
             field = value
-            setTextSize(binding!!.tvDone,if (size > 2) size - 2f else size)
-            setTextSize(binding!!.tvCancel,if (size > 2) size - 2f else size)
-            setTextSize(binding!!.tvTitle,if (size > 2) size - 2f else size)
+            if (binding != null){
+                setTextSize(binding!!.tvDone,if (size > 2) size - 2f else size)
+                setTextSize(binding!!.tvCancel,if (size > 2) size - 2f else size)
+                setTextSize(binding!!.tvTitle,if (size > 2) size - 2f else size)
+            }
         }
 
     private var binding: BottomDialogBinding? = null

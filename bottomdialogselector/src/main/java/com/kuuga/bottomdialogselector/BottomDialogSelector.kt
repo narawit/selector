@@ -76,7 +76,6 @@ class BottomDialogSelector : TextView, SelectorListener {
         initUI()
     }
 
-
     private fun initUI() {
         text = display
         selector = SelectorFragment.newInstance(this)
