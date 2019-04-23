@@ -2,21 +2,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-
-        <variable
-            name="txtTitle"
-            type="String" />
-
-        <variable
-            name="txtCancel"
-            type="String" />
-
-        <variable
-            name="txtDone"
-            type="String" />
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/fragment_history_menu_bottom"
         android:layout_width="match_parent"
@@ -45,7 +30,7 @@
                     android:layout_height="match_parent"
                     android:layout_margin="8dp"
                     android:gravity="center"
-                    android:text='@{(txtCancel != null) ? txtCancel : @string/cancel,default = @string/cancel}'
+                    android:text='@string/cancel'
                     android:textColor="#1662ee"
                     android:textStyle="bold"/>
             </FrameLayout>
@@ -56,7 +41,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text='@{(txtTitle != null) ? txtTitle : @string/title,default = @string/title}'
+                android:text='@string/title'
                 android:textAlignment="center"
                 android:textColor="#000000"
                 android:textStyle="bold" />
@@ -73,7 +58,7 @@
                     android:layout_height="match_parent"
                     android:layout_margin="8dp"
                     android:gravity="center"
-                    android:text='@{(txtDone != null) ? txtDone : @string/done,default = @string/done}'
+                    android:text='@string/done'
                     android:textColor="#1662ee"
                     android:textStyle="bold" />
             </FrameLayout>
