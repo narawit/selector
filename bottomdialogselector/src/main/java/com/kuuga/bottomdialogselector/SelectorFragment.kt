@@ -36,28 +36,28 @@ class SelectorFragment : BottomSheetDialogFragment() {
         }
 
     private var binding: BottomDialogBinding? = null
+    private var txtDone: String? = null
+    private var txtCancel: String? = null
+    private var txtTitle: String? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.bottom_dialog, container, false)
+        binding?.txtDone = txtDone
+        binding?.txtCancel = txtCancel
+        binding?.txtTitle = txtTitle
         return binding!!.root
     }
 
     fun setTextDone(text: String) {
-        if (binding != null) {
-            binding!!.tvDone.text = text
-        }
+        txtDone = text
     }
 
     fun setTextCancel(text: String) {
-        if (binding != null) {
-            binding!!.tvCancel.text = text
-        }
+        txtCancel = text
     }
 
     fun setTextTitle(text: String) {
-        if (binding != null) {
-            binding!!.tvTitle.text = text
-        }
+        txtTitle = text
     }
 
     override fun onDismiss(dialog: DialogInterface?) {
