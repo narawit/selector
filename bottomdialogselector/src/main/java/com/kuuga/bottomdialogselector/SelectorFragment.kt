@@ -44,19 +44,19 @@ class SelectorFragment : BottomSheetDialogFragment() {
 
     fun setTextDone(text: String) {
         if (binding != null) {
-            binding!!.txtDone = text
+            binding!!.tvDone.text = text
         }
     }
 
     fun setTextCancel(text: String) {
         if (binding != null) {
-            binding!!.txtCancel = text
+            binding!!.tvCancel.text = text
         }
     }
 
     fun setTextTitle(text: String) {
         if (binding != null) {
-            binding!!.txtTitle = text
+            binding!!.tvTitle.text = text
         }
     }
 
