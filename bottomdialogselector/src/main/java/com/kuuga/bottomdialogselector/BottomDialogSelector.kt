@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 
 class BottomDialogSelector : TextView, SelectorListener {
+
     var pos = -1
     var display = "Selector"
         set(value) {
@@ -116,5 +117,9 @@ class BottomDialogSelector : TextView, SelectorListener {
         this.display = display
 
         this.text = display
+    }
+
+    override fun onCancel() {
+
     }
 }
