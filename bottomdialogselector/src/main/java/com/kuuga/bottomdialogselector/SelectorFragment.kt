@@ -1,5 +1,6 @@
 package com.kuuga.bottomdialogselector
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,11 +11,12 @@ import com.kuuga.bottomdialogselector.databinding.BottomDialogBinding
 
 class SelectorFragment : BottomSheetDialogFragment() {
     private var listener: SelectorListener? = null
+    private var isCancel = false
 
     var data: ArrayList<String> = arrayListOf()
         set(value) {
             field = value
-            if (binding != null)  binding!!.textPicker.setData(value)
+            if (binding != null) binding!!.textPicker.setData(value)
         }
 
     var position = -1
@@ -26,10 +28,10 @@ class SelectorFragment : BottomSheetDialogFragment() {
     var size = 18f
         set(value) {
             field = value
-            if (binding != null){
-                setTextSize(binding!!.tvDone,if (size > 2) size - 2f else size)
-                setTextSize(binding!!.tvCancel,if (size > 2) size - 2f else size)
-                setTextSize(binding!!.tvTitle,if (size > 2) size - 2f else size)
+            if (binding != null) {
+                setTextSize(binding!!.tvDone, if (size > 2) size - 2f else size)
+                setTextSize(binding!!.tvCancel, if (size > 2) size - 2f else size)
+                setTextSize(binding!!.tvTitle, if (size > 2) size - 2f else size)
             }
         }
 
@@ -58,12 +60,17 @@ class SelectorFragment : BottomSheetDialogFragment() {
         }
     }
 
+    override fun onDismiss(dialog: DialogInterface?) {
+        super.onDismiss(dialog)
+        if (isCancel) listener!!.onCancel()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (binding != null) {
-            setTextSize(binding!!.tvDone,if (size > 2) size - 2f else size)
-            setTextSize(binding!!.tvCancel,if (size > 2) size - 2f else size)
-            setTextSize(binding!!.tvTitle,if (size > 2) size - 2f else size)
+            setTextSize(binding!!.tvDone, if (size > 2) size - 2f else size)
+            setTextSize(binding!!.tvCancel, if (size > 2) size - 2f else size)
+            setTextSize(binding!!.tvTitle, if (size > 2) size - 2f else size)
 
             binding!!.textPicker.setData(data)
 
@@ -76,6 +83,7 @@ class SelectorFragment : BottomSheetDialogFragment() {
             }
 
             binding!!.btnCancel.setOnClickListener {
+                isCancel = true
                 dismiss()
             }
         }
@@ -85,6 +93,7 @@ class SelectorFragment : BottomSheetDialogFragment() {
         fun newInstance(listener: SelectorListener): SelectorFragment {
             val fragment = SelectorFragment()
             fragment.listener = listener
+            fragment.isCancel = false
             return fragment
         }
     }
