@@ -47,7 +47,7 @@
                     android:gravity="center"
                     android:text='@{(txtCancel != null) ? txtCancel : @string/cancel,default = @string/cancel}'
                     android:textColor="#1662ee"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
             </FrameLayout>
 
             <TextView
@@ -79,17 +79,24 @@
             </FrameLayout>
         </LinearLayout>
 
-        <com.kuuga.textpicker.TextPicker
-            android:id="@+id/text_picker"
+        <com.wx.wheelview.widget.NestedScrollView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_margin="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ll_btn"/>
+            app:layout_constraintTop_toBottomOf="@+id/ll_btn">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.wx.wheelview.widget.WheelView
+                    android:id="@+id/picker"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </com.wx.wheelview.widget.NestedScrollView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
