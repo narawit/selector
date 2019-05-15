@@ -7,22 +7,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.kuuga.bottomdialogselector.databinding.BottomDialogBinding
+import com.kuuga.bottomdialogselector.databinding.DialogPickerBinding
+import com.wx.wheelview.adapter.BaseWheelAdapter
+import com.wx.wheelview.widget.WheelView
 
-class SelectorFragment : BottomSheetDialogFragment() {
-    private var listener: SelectorListener? = null
+class PickerDialog<T> : BottomSheetDialogFragment() {
+    private var listener: PickerListener<T>? = null
     private var isCancel = false
 
-    var data: ArrayList<String> = arrayListOf()
+    var data: ArrayList<T> = arrayListOf()
         set(value) {
             field = value
-            if (binding != null) binding!!.textPicker.setData(value)
+            if (binding != null) binding!!.picker.setWheelData(value)
         }
 
     var position = -1
         set(value) {
             field = value
-            if (binding != null) binding!!.textPicker.value = value
+            if (binding != null) binding!!.picker.selection = value
         }
 
     var size = 18f
@@ -35,13 +37,38 @@ class SelectorFragment : BottomSheetDialogFragment() {
             }
         }
 
-    private var binding: BottomDialogBinding? = null
+    var loop = false
+        set(value) {
+            field = value
+            if (binding != null) binding!!.picker.setLoop(value)
+        }
+
+    var style = WheelView.WheelViewStyle()
+        set(value) {
+            field = value
+            if (binding != null) binding!!.picker.style = value
+        }
+
+    var wheelSize = 3
+        set(value) {
+            field = value
+            if (binding != null) binding!!.picker.setWheelSize(value)
+        }
+
+    var adapter: BaseWheelAdapter<T>? = null
+        set(value) {
+            field = value
+            if (binding != null && value != null) binding!!.picker.setWheelAdapter(value)
+        }
+
+
+    private var binding: DialogPickerBinding? = null
     private var txtDone: String? = null
     private var txtCancel: String? = null
     private var txtTitle: String? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.bottom_dialog, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.dialog_picker, container, false)
         binding?.txtDone = txtDone
         binding?.txtCancel = txtCancel
         binding?.txtTitle = txtTitle
@@ -72,13 +99,19 @@ class SelectorFragment : BottomSheetDialogFragment() {
             setTextSize(binding!!.tvCancel, if (size > 2) size - 2f else size)
             setTextSize(binding!!.tvTitle, if (size > 2) size - 2f else size)
 
-            binding!!.textPicker.setData(data)
+            if (adapter != null) binding!!.picker.setWheelAdapter(adapter)
+
+            binding!!.picker.setLoop(loop)
+            binding!!.picker.setWheelSize(wheelSize)
+            binding!!.picker.skin = WheelView.Skin.Holo
+            binding!!.picker.style = style
+            binding!!.picker.setWheelData(data)
 
             if (position > -1)
-                binding!!.textPicker.value = position
+                binding!!.picker.selection = position
 
             binding!!.btnDone.setOnClickListener {
-                listener!!.onDone(binding!!.textPicker.value, data[binding!!.textPicker.value])
+                listener!!.onDone(binding!!.picker.currentPosition, binding!!.picker.selectionItem as T)
                 dismiss()
             }
 
@@ -90,8 +123,8 @@ class SelectorFragment : BottomSheetDialogFragment() {
     }
 
     companion object {
-        fun newInstance(listener: SelectorListener): SelectorFragment {
-            val fragment = SelectorFragment()
+        fun <T> newInstance(listener: PickerListener<T>): PickerDialog<T> {
+            val fragment = PickerDialog<T>()
             fragment.listener = listener
             fragment.isCancel = false
             return fragment
