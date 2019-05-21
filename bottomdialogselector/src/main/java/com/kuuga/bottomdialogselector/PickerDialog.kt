@@ -13,7 +13,8 @@ import com.wx.wheelview.widget.WheelView
 
 class PickerDialog<T> : BottomSheetDialogFragment() {
     private var listener: PickerListener<T>? = null
-    private var isCancel = false
+
+    var show = false
 
     var data: ArrayList<T> = arrayListOf()
         set(value) {
@@ -72,7 +73,13 @@ class PickerDialog<T> : BottomSheetDialogFragment() {
         binding?.txtDone = txtDone
         binding?.txtCancel = txtCancel
         binding?.txtTitle = txtTitle
+        show = true
         return binding!!.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        show = false
     }
 
     fun setTextDone(text: String) {
@@ -89,7 +96,7 @@ class PickerDialog<T> : BottomSheetDialogFragment() {
 
     override fun onDismiss(dialog: DialogInterface?) {
         super.onDismiss(dialog)
-        if (isCancel) listener!!.onCancel()
+        show = false
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -116,17 +123,18 @@ class PickerDialog<T> : BottomSheetDialogFragment() {
             }
 
             binding!!.btnCancel.setOnClickListener {
-                isCancel = true
+                listener!!.onCancel()
                 dismiss()
             }
         }
     }
 
+
+
     companion object {
         fun <T> newInstance(listener: PickerListener<T>): PickerDialog<T> {
             val fragment = PickerDialog<T>()
             fragment.listener = listener
-            fragment.isCancel = false
             return fragment
         }
     }
