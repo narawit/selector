@@ -21,9 +21,6 @@ class DatePickerDialog : BottomSheetDialogFragment() {
     private var listener: DatePickerListener? = null
     private var isThai: Boolean = false
 
-    private val month_th = arrayListOf("มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม")
-    private val month_en = arrayListOf("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
-
     private var temp: Date? = null
     var date: Date? = null
 
@@ -231,12 +228,21 @@ class DatePickerDialog : BottomSheetDialogFragment() {
         }
     }
 
-
     companion object {
-        fun newInstance(listener: DatePickerListener, isThai: Boolean = false): DatePickerDialog {
+        private val month_th = arrayListOf("มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม")
+        private val month_en = arrayListOf("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+
+        private fun createDateFromInt(isThai: Boolean, year: Int, month: Int, day: Int): Date {
+            return Date(day, Month(month, if (isThai) month_th[month - 1] else month_en[month - 1]), Year(year))
+        }
+
+        fun newInstance(listener: DatePickerListener, isThai: Boolean, year: Int? = null, month: Int? = null, day: Int? = null): DatePickerDialog {
             val fragment = DatePickerDialog()
             fragment.listener = listener
             fragment.isThai = isThai
+            if (year != null && month != null && day != null) {
+                fragment.date = createDateFromInt(isThai, year, month, day)
+            }
             return fragment
         }
     }
