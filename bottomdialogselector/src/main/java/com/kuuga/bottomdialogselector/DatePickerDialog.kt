@@ -115,8 +115,8 @@ class DatePickerDialog : BottomSheetDialogFragment() {
             binding!!.dayPicker.setWheelData(mDay)
 
             binding!!.yearPicker.setOnWheelItemSelectedListener { position, t ->
-                if (date!!.year != mYear!![position]) {
-                    date!!.year = mYear!![position]
+                if ( this.temp!!.year != mYear!![position]) {
+                    this.temp!!.year = mYear!![position]
                     val temp = binding!!.dayPicker.currentPosition
                     binding!!.dayPicker.selection = 27
                     createDayData()
@@ -129,8 +129,8 @@ class DatePickerDialog : BottomSheetDialogFragment() {
             }
 
             binding!!.monthPicker.setOnWheelItemSelectedListener { position, t ->
-                if (date!!.month != mMonth!![position]) {
-                    date!!.month = mMonth!![position]
+                if ( this.temp!!.month != mMonth!![position]) {
+                    this.temp!!.month = mMonth!![position]
                     val temp = binding!!.dayPicker.currentPosition
                     binding!!.dayPicker.selection = 27
                     createDayData()
@@ -143,20 +143,20 @@ class DatePickerDialog : BottomSheetDialogFragment() {
             }
 
             binding!!.dayPicker.setOnWheelItemSelectedListener { position, t ->
-                date!!.day = mDay!![position]
+                this.temp!!.day = mDay!![position]
             }
 
-            binding!!.yearPicker.selection = checkYear(date!!.year)
-            binding!!.monthPicker.selection = checkMonth(date!!.month)
-            binding!!.dayPicker.selection = checkDay(date!!.day)
+            binding!!.yearPicker.selection = checkYear( this.temp!!.year)
+            binding!!.monthPicker.selection = checkMonth( this.temp!!.month)
+            binding!!.dayPicker.selection = checkDay( this.temp!!.day)
 
             binding!!.btnDone.setOnClickListener {
+                date = Date(temp!!)
                 listener!!.onDone(date!!)
                 dismiss()
             }
 
             binding!!.btnCancel.setOnClickListener {
-                date = Date(temp!!)
                 listener!!.onCancel()
                 dismiss()
             }
@@ -177,7 +177,7 @@ class DatePickerDialog : BottomSheetDialogFragment() {
 
     var mDay: ArrayList<Int>? = arrayListOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28)
     private fun createDayData() {
-        when (date!!.month.id) {
+        when (this.temp!!.month.id) {
             1, 3, 5, 7, 8, 10, 12 -> {
                 mDay!!.remove(31)
                 mDay!!.remove(30)
@@ -191,7 +191,7 @@ class DatePickerDialog : BottomSheetDialogFragment() {
                 mDay!!.remove(31)
                 mDay!!.remove(30)
                 mDay!!.remove(29)
-                if (date!!.year.year % 4 == 0) {
+                if (this.temp!!.year.year % 4 == 0) {
                     mDay!!.add(29)
                 }
             }
@@ -242,7 +242,7 @@ class DatePickerDialog : BottomSheetDialogFragment() {
         private val month_th = arrayListOf("มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม")
         private val month_en = arrayListOf("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
 
-        private fun createDateFromInt(isThai: Boolean, year: Int, month: Int, day: Int): Date {
+        fun createDateFromInt(isThai: Boolean, year: Int, month: Int, day: Int): Date {
             return Date(day, Month(month, if (isThai) month_th[month - 1] else month_en[month - 1]), Year(year))
         }
 
