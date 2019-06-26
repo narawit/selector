@@ -3,6 +3,9 @@ package com.kuuga.selector
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.kuuga.bottomdialogselector.DatePickerDialog
+import com.kuuga.bottomdialogselector.DatePickerListener
+import com.kuuga.bottomdialogselector.model.Date
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -11,11 +14,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        selector.display = "Country"
-        selector.data = arrayListOf("Thailand","USA","Japan")
+        val selector = DatePickerDialog.newInstance(object :DatePickerListener{
+            override fun onDone(data: Date) {
+                tv_date.text= "${data.day} ${data.month.name} ${data.year.year}"
+            }
 
-        selector.setOnSelectListener { position, display ->
-            Toast.makeText(this,"position:$position , display:$display",Toast.LENGTH_LONG).show()
+            override fun onCancel() {
+
+            }
+
+        },true)
+        btn_dialog.setOnClickListener {
+            selector.show(supportFragmentManager,"dialog")
         }
     }
 }
