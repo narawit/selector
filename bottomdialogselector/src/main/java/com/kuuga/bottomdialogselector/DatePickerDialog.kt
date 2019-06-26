@@ -115,7 +115,17 @@ class DatePickerDialog : BottomSheetDialogFragment() {
             binding!!.dayPicker.setWheelData(mDay)
 
             binding!!.yearPicker.setOnWheelItemSelectedListener { position, t ->
-                date!!.year = mYear!![position]
+                if (date!!.year != mYear!![position]) {
+                    date!!.year = mYear!![position]
+                    val temp = binding!!.dayPicker.currentPosition
+                    binding!!.dayPicker.selection = 27
+                    createDayData()
+                    if (temp > mDay!!.size - 1) {
+                        binding!!.dayPicker.selection = mDay!!.size - 1
+                    } else {
+                        binding!!.dayPicker.selection = temp
+                    }
+                }
             }
 
             binding!!.monthPicker.setOnWheelItemSelectedListener { position, t ->

@@ -15,7 +15,7 @@ class MonthAdapter(private val mContext: Context) : BaseWheelAdapter<Month>() {
 
     override fun bindView(position: Int, convertView: View?, parent: ViewGroup): View {
         val viewHolder = ViewHolder()
-        val binding: ItemPickerTextBinding = DataBindingUtil.inflate(LayoutInflater.from(mContext), R.layout.item_picker_text, parent, false)
+        val binding: ItemPickerTextBinding = DataBindingUtil.inflate(LayoutInflater.from(mContext), R.layout.simple_picker_text, parent, false)
         viewHolder.textView = binding.itemName
         viewHolder.textView!!.text = mList[position].name
         return binding.root
