@@ -14,7 +14,7 @@ class DayAdapter(private val mContext: Context) : BaseWheelAdapter<Int>() {
 
     override fun bindView(position: Int, convertView: View?, parent: ViewGroup): View {
         val viewHolder = ViewHolder()
-        val binding: ItemPickerTextBinding = DataBindingUtil.inflate(LayoutInflater.from(mContext), R.layout.item_picker_text, parent, false)
+        val binding: ItemPickerTextBinding = DataBindingUtil.inflate(LayoutInflater.from(mContext), R.layout.simple_picker_text, parent, false)
         viewHolder.textView = binding.itemName
         viewHolder.textView!!.text = mList[position].toString()
         return binding.root
