@@ -242,7 +242,7 @@ class DatePickerDialog : BottomSheetDialogFragment() {
         private val month_th = arrayListOf("มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม")
         private val month_en = arrayListOf("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
 
-        private fun createDateFromInt(isThai: Boolean, year: Int, month: Int, day: Int): Date {
+        fun createDateFromInt(isThai: Boolean, year: Int, month: Int, day: Int): Date {
             return Date(day, Month(month, if (isThai) month_th[month - 1] else month_en[month - 1]), Year(year))
         }
 
