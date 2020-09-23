@@ -4,51 +4,32 @@ import android.content.Context
 import android.util.DisplayMetrics
 import android.view.WindowManager
 import android.widget.TextView
-import androidx.databinding.BindingAdapter
 
 fun setTextSize(view: TextView, size: Float) {
-    val scaleFactor: Float
     val heightDp: Float
-    val widthInches: Float
-    val widthDpi: Float
-    val heightDpi: Float
-    val heightInches: Float
-    val diagonalInches: Double
     val heightPixels: Int
     val widthPixels: Int
-    val width: Int
-    val height: Int
+    val scaleFontFactor: Float
+    val widthDp: Float
 
     val windowManager = view.context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-    width = windowManager.defaultDisplay.width
-    height = windowManager.defaultDisplay.height
     val metrics = DisplayMetrics()
-    windowManager.defaultDisplay.getMetrics(metrics)
+    windowManager.getDefaultDisplay().getMetrics(metrics)
+
+    scaleFontFactor = metrics.scaledDensity
 
     heightPixels = metrics.heightPixels
-    scaleFactor = metrics.density
     widthPixels = metrics.widthPixels
-    heightDp = heightPixels / scaleFactor
-    widthDpi = metrics.xdpi
-    heightDpi = metrics.ydpi
-    widthInches = widthPixels / widthDpi
-    heightInches = heightPixels / heightDpi
-    diagonalInches = Math.sqrt((widthInches * widthInches + heightInches * heightInches).toDouble())
-
+    heightDp = heightPixels / scaleFontFactor
+    widthDp = widthPixels / scaleFontFactor
     val diffHeightDp: Float
 
-    diffHeightDp = if (height >= width) {
-        if (height < 801 && diagonalInches < 6.0) {
-            800.0f
-        } else {
-            592.0f
-        }
+    diffHeightDp = if (heightPixels >= widthPixels) {
+        // portrait
+        heightDp / 683.4286f
     } else {
-        if (height < 801 && diagonalInches < 6.0) {
-            560.0f
-        } else {
-            360.0f
-        }
+        // landscape
+        widthDp / 411.42856f
     }
 
     view.textSize = size / diffHeightDp * heightDp
