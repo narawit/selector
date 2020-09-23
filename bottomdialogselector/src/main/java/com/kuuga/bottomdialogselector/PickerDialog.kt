@@ -1,6 +1,7 @@
 package com.kuuga.bottomdialogselector
 
 import android.content.DialogInterface
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -32,9 +33,9 @@ class PickerDialog<T> : BottomSheetDialogFragment() {
         set(value) {
             field = value
             if (binding != null) {
-                setTextSize(binding!!.tvDone, if (size > 2) size - 2f else size)
-                setTextSize(binding!!.tvCancel, if (size > 2) size - 2f else size)
-                setTextSize(binding!!.tvTitle, if (size > 2) size - 2f else size)
+                setTextSize(binding!!.tvDone, if (size > 2) size else size)
+                setTextSize(binding!!.tvCancel, if (size > 2) size else size)
+                setTextSize(binding!!.tvTitle, if (size > 2) size else size)
             }
         }
 
@@ -67,6 +68,7 @@ class PickerDialog<T> : BottomSheetDialogFragment() {
     private var txtDone: String? = null
     private var txtCancel: String? = null
     private var txtTitle: String? = null
+    private var font: Typeface? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.dialog_picker, container, false)
@@ -94,6 +96,10 @@ class PickerDialog<T> : BottomSheetDialogFragment() {
         txtTitle = text
     }
 
+    fun setFont(typeface: Typeface) {
+        font = typeface
+    }
+
     override fun onDismiss(dialog: DialogInterface?) {
         super.onDismiss(dialog)
         show = false
@@ -102,9 +108,15 @@ class PickerDialog<T> : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (binding != null) {
-            setTextSize(binding!!.tvDone, if (size > 2) size - 2f else size)
-            setTextSize(binding!!.tvCancel, if (size > 2) size - 2f else size)
-            setTextSize(binding!!.tvTitle, if (size > 2) size - 2f else size)
+            setTextSize(binding!!.tvDone, if (size > 2) size else size)
+            setTextSize(binding!!.tvCancel, if (size > 2) size else size)
+            setTextSize(binding!!.tvTitle, if (size > 2) size else size)
+
+            if (font != null) {
+                binding!!.tvDone.setTypeface(font, Typeface.NORMAL)
+                binding!!.tvCancel.setTypeface(font, Typeface.NORMAL)
+                binding!!.tvTitle.setTypeface(font, Typeface.NORMAL)
+            }
 
             if (adapter != null) binding!!.picker.setWheelAdapter(adapter)
 
@@ -128,7 +140,6 @@ class PickerDialog<T> : BottomSheetDialogFragment() {
             }
         }
     }
-
 
 
     companion object {
