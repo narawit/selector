@@ -32,5 +32,5 @@ fun setTextSize(view: TextView, size: Float) {
         widthDp / 411.42856f
     }
 
-    view.textSize = size / diffHeightDp * heightDp
+    view.textSize = size *  diffHeightDp
 }
