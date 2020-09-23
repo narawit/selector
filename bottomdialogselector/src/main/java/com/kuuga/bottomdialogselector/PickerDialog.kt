@@ -33,9 +33,9 @@ class PickerDialog<T> : BottomSheetDialogFragment() {
         set(value) {
             field = value
             if (binding != null) {
-                setTextSize(binding!!.tvDone, if (size > 2) size else size)
-                setTextSize(binding!!.tvCancel, if (size > 2) size else size)
-                setTextSize(binding!!.tvTitle, if (size > 2) size else size)
+                setTextSize(binding!!.tvDone, if (size > 2) size - 2f else size)
+                setTextSize(binding!!.tvCancel, if (size > 2) size - 2f else size)
+                setTextSize(binding!!.tvTitle, if (size > 2) size - 2f else size)
             }
         }
 
@@ -108,9 +108,9 @@ class PickerDialog<T> : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (binding != null) {
-            setTextSize(binding!!.tvDone, if (size > 2) size else size)
-            setTextSize(binding!!.tvCancel, if (size > 2) size else size)
-            setTextSize(binding!!.tvTitle, if (size > 2) size else size)
+            setTextSize(binding!!.tvDone, if (size > 2) size - 2f else size)
+            setTextSize(binding!!.tvCancel, if (size > 2) size - 2f else size)
+            setTextSize(binding!!.tvTitle, if (size > 2) size - 2f else size)
 
             if (font != null) {
                 binding!!.tvDone.setTypeface(font, Typeface.NORMAL)
