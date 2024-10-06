@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.databinding.DataBindingUtil
 import com.kuuga.selector.databinding.ItemPickerTextBinding
 import com.wx.wheelview.adapter.BaseWheelAdapter
 
@@ -18,17 +17,16 @@ class TypePickerAdapter(private val mContext: Context) : BaseWheelAdapter<String
 
         if (convertView == null) {
             viewHolder = ViewHolder()
-            binding = DataBindingUtil.inflate(
-                    LayoutInflater.from(mContext),
-                    R.layout.item_picker_text,
-                    parent,
-                    false
+            binding = ItemPickerTextBinding.inflate(
+                LayoutInflater.from(mContext),
+                parent,
+                false
             )
 
-            viewHolder.textView = binding?.itemName
+            viewHolder.textView = binding.itemName
             binding.root.tag = viewHolder
         } else {
-            binding = DataBindingUtil.findBinding(convertView)!!
+            binding = ItemPickerTextBinding.bind(convertView)
             viewHolder = binding.root.tag as ViewHolder
         }
 
