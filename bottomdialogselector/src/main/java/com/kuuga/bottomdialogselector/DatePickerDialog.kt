@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.kuuga.bottomdialogselector.adapter.DayAdapter
 import com.kuuga.bottomdialogselector.adapter.MonthAdapter
@@ -29,10 +28,10 @@ class DatePickerDialog : BottomSheetDialogFragment() {
     var size = 18f
         set(value) {
             field = value
-            if (binding != null) {
-                setTextSize(binding!!.tvDone, if (size > 2) size - 2f else size)
-                setTextSize(binding!!.tvCancel, if (size > 2) size - 2f else size)
-                setTextSize(binding!!.tvTitle, if (size > 2) size - 2f else size)
+            binding?.let {
+                setTextSize(it.tvDone, if (size > 2) size - 2f else size)
+                setTextSize(it.tvCancel, if (size > 2) size - 2f else size)
+                setTextSize(it.tvTitle, if (size > 2) size - 2f else size)
             }
         }
 
@@ -41,11 +40,15 @@ class DatePickerDialog : BottomSheetDialogFragment() {
     private var txtCancel: String? = null
     private var txtTitle: String? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.dialog_date_picker, container, false)
-        binding?.txtDone = txtDone
-        binding?.txtCancel = txtCancel
-        binding?.txtTitle = txtTitle
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = DialogDatePickerBinding.inflate(layoutInflater, container, false)
+        txtDone = getString(R.string.done)
+        txtCancel = getString(R.string.cancel)
+        txtTitle = getString(R.string.title)
         show = true
         return binding!!.root
     }
@@ -74,90 +77,94 @@ class DatePickerDialog : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (binding != null) {
-            setTextSize(binding!!.tvDone, if (size > 2) size - 2f else size)
-            setTextSize(binding!!.tvCancel, if (size > 2) size - 2f else size)
-            setTextSize(binding!!.tvTitle, if (size > 2) size - 2f else size)
+        binding?.let{
+            setTextSize(it.tvDone, if (size > 2) size - 2f else size)
+            setTextSize(it.tvCancel, if (size > 2) size - 2f else size)
+            setTextSize(it.tvTitle, if (size > 2) size - 2f else size)
 
             val yearAdapter = YearAdapter(context!!, isThai)
-            binding!!.yearPicker.setWheelAdapter(yearAdapter)
+            it.yearPicker.setWheelAdapter(yearAdapter)
             val monthAdapter = MonthAdapter(context!!)
-            binding!!.monthPicker.setWheelAdapter(monthAdapter)
+            it.monthPicker.setWheelAdapter(monthAdapter)
             val dayAdapter = DayAdapter(context!!)
-            binding!!.dayPicker.setWheelAdapter(dayAdapter)
+            it.dayPicker.setWheelAdapter(dayAdapter)
 
 
-            binding!!.yearPicker.setLoop(false)
-            binding!!.monthPicker.setLoop(true)
-            binding!!.dayPicker.setLoop(true)
+            it.yearPicker.setLoop(false)
+            it.monthPicker.setLoop(true)
+            it.dayPicker.setLoop(true)
 
-            binding!!.yearPicker.setWheelSize(3)
-            binding!!.monthPicker.setWheelSize(3)
-            binding!!.dayPicker.setWheelSize(3)
+            it.yearPicker.setWheelSize(3)
+            it.monthPicker.setWheelSize(3)
+            it.dayPicker.setWheelSize(3)
 
-            binding!!.yearPicker.skin = WheelView.Skin.Holo
-            binding!!.monthPicker.skin = WheelView.Skin.Holo
-            binding!!.dayPicker.skin = WheelView.Skin.Holo
+            it.yearPicker.skin = WheelView.Skin.Holo
+            it.monthPicker.skin = WheelView.Skin.Holo
+            it.dayPicker.skin = WheelView.Skin.Holo
 
             if (date == null) {
                 val date = Calendar.getInstance()
                 val year = date.get(Calendar.YEAR)
                 val month = date.get(Calendar.MONTH)
                 val day = date.get(Calendar.DAY_OF_MONTH)
-                this.date = Date(day, Month(month + 1, if (isThai) month_th[month] else month_en[month]), Year(year))
+                this.date = Date(
+                    day,
+                    Month(month + 1, if (isThai) month_th[month] else month_en[month]),
+                    Year(year)
+                )
             }
             this.temp = Date(date!!)
             createYearData()
             createMonthData()
             createDayData()
-            binding!!.yearPicker.setWheelData(mYear)
-            binding!!.monthPicker.setWheelData(mMonth)
-            binding!!.dayPicker.setWheelData(mDay)
+            it.yearPicker.setWheelData(mYear)
+            it.monthPicker.setWheelData(mMonth)
+            it.dayPicker.setWheelData(mDay)
 
-            binding!!.yearPicker.setOnWheelItemSelectedListener { position, t ->
-                if ( this.temp!!.year != mYear!![position]) {
+            it.yearPicker.setOnWheelItemSelectedListener { position, t ->
+                if (this.temp!!.year != mYear!![position]) {
                     this.temp!!.year = mYear!![position]
-                    val temp = binding!!.dayPicker.currentPosition
-                    binding!!.dayPicker.selection = 27
+                    val temp = it.dayPicker.currentPosition
+                    it.dayPicker.selection = 27
                     createDayData()
                     if (temp > mDay!!.size - 1) {
-                        binding!!.dayPicker.selection = mDay!!.size - 1
+                        it.dayPicker.selection = mDay!!.size - 1
                     } else {
-                        binding!!.dayPicker.selection = temp
+                        it.dayPicker.selection = temp
                     }
                 }
             }
 
-            binding!!.monthPicker.setOnWheelItemSelectedListener { position, t ->
-                if ( this.temp!!.month != mMonth!![position]) {
+            it.monthPicker.setOnWheelItemSelectedListener { position, t ->
+                if (this.temp!!.month != mMonth!![position]) {
                     this.temp!!.month = mMonth!![position]
-                    val temp = binding!!.dayPicker.currentPosition
-                    binding!!.dayPicker.selection = 27
+                    val temp = it.dayPicker.currentPosition
+                    it.dayPicker.selection = 27
                     createDayData()
                     if (temp > mDay!!.size - 1) {
-                        binding!!.dayPicker.selection = mDay!!.size - 1
+                        it.dayPicker.selection = mDay!!.size - 1
                     } else {
-                        binding!!.dayPicker.selection = temp
+                        it.dayPicker.selection = temp
                     }
                 }
             }
 
-            binding!!.dayPicker.setOnWheelItemSelectedListener { position, t ->
+            it.dayPicker.setOnWheelItemSelectedListener { position, t ->
                 this.temp!!.day = mDay!![position]
             }
 
-            binding!!.yearPicker.selection = checkYear( this.temp!!.year)
-            binding!!.monthPicker.selection = checkMonth( this.temp!!.month)
-            binding!!.dayPicker.selection = checkDay( this.temp!!.day)
+            it.yearPicker.selection = checkYear(this.temp!!.year)
+            it.monthPicker.selection = checkMonth(this.temp!!.month)
+            it.dayPicker.selection = checkDay(this.temp!!.day)
 
-            binding!!.btnDone.setOnClickListener {
+            it.btnDone.setOnClickListener {
                 date = Date(temp!!)
-                listener!!.onDone(date!!)
+                listener?.onDone(date!!)
                 dismiss()
             }
 
-            binding!!.btnCancel.setOnClickListener {
-                listener!!.onCancel()
+            it.btnCancel.setOnClickListener {
+                listener?.onCancel()
                 dismiss()
             }
         }
@@ -175,7 +182,37 @@ class DatePickerDialog : BottomSheetDialogFragment() {
         return mDay?.indexOf(day) ?: 0
     }
 
-    var mDay: ArrayList<Int>? = arrayListOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28)
+    var mDay: ArrayList<Int>? = arrayListOf(
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28
+    )
+
     private fun createDayData() {
         when (this.temp!!.month.id) {
             1, 3, 5, 7, 8, 10, 12 -> {
@@ -187,6 +224,7 @@ class DatePickerDialog : BottomSheetDialogFragment() {
                 mDay!!.add(30)
                 mDay!!.add(31)
             }
+
             2 -> {
                 mDay!!.remove(31)
                 mDay!!.remove(30)
@@ -195,6 +233,7 @@ class DatePickerDialog : BottomSheetDialogFragment() {
                     mDay!!.add(29)
                 }
             }
+
             else -> {
                 mDay!!.remove(31)
                 mDay!!.remove(30)
@@ -239,14 +278,50 @@ class DatePickerDialog : BottomSheetDialogFragment() {
     }
 
     companion object {
-        private val month_th = arrayListOf("มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม")
-        private val month_en = arrayListOf("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+        private val month_th = arrayListOf(
+            "มกราคม",
+            "กุมภาพันธ์",
+            "มีนาคม",
+            "เมษายน",
+            "พฤษภาคม",
+            "มิถุนายน",
+            "กรกฎาคม",
+            "สิงหาคม",
+            "กันยายน",
+            "ตุลาคม",
+            "พฤศจิกายน",
+            "ธันวาคม"
+        )
+        private val month_en = arrayListOf(
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December"
+        )
 
         fun createDateFromInt(isThai: Boolean, year: Int, month: Int, day: Int): Date {
-            return Date(day, Month(month, if (isThai) month_th[month - 1] else month_en[month - 1]), Year(year))
+            return Date(
+                day,
+                Month(month, if (isThai) month_th[month - 1] else month_en[month - 1]),
+                Year(year)
+            )
         }
 
-        fun newInstance(listener: DatePickerListener, isThai: Boolean, year: Int? = null, month: Int? = null, day: Int? = null): DatePickerDialog {
+        fun newInstance(
+            listener: DatePickerListener,
+            isThai: Boolean,
+            year: Int? = null,
+            month: Int? = null,
+            day: Int? = null
+        ): DatePickerDialog {
             val fragment = DatePickerDialog()
             fragment.listener = listener
             fragment.isThai = isThai
