@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.kuuga.bottomdialogselector.databinding.DialogPickerBinding
 import com.wx.wheelview.adapter.BaseWheelAdapter
@@ -20,47 +19,47 @@ class PickerDialog<T> : BottomSheetDialogFragment() {
     var data: ArrayList<T> = arrayListOf()
         set(value) {
             field = value
-            if (binding != null) binding!!.picker.setWheelData(value)
+            binding?.picker?.setWheelData(value)
         }
 
     var position = -1
         set(value) {
             field = value
-            if (binding != null) binding!!.picker.selection = value
+            binding?.picker?.selection = value
         }
 
     var size = 18f
         set(value) {
             field = value
-            if (binding != null) {
-                setTextSize(binding!!.tvDone, if (size > 2) size - 2f else size)
-                setTextSize(binding!!.tvCancel, if (size > 2) size - 2f else size)
-                setTextSize(binding!!.tvTitle, if (size > 2) size - 2f else size)
+            binding?.let {
+                setTextSize(it.tvDone, if (size > 2) size - 2f else size)
+                setTextSize(it.tvCancel, if (size > 2) size - 2f else size)
+                setTextSize(it.tvTitle, if (size > 2) size - 2f else size)
             }
         }
 
     var loop = false
         set(value) {
             field = value
-            if (binding != null) binding!!.picker.setLoop(value)
+            binding?.picker?.setLoop(value)
         }
 
     var style = WheelView.WheelViewStyle()
         set(value) {
             field = value
-            if (binding != null) binding!!.picker.style = value
+            binding?.picker?.style = value
         }
 
     var wheelSize = 3
         set(value) {
             field = value
-            if (binding != null) binding!!.picker.setWheelSize(value)
+            binding?.picker?.setWheelSize(value)
         }
 
     var adapter: BaseWheelAdapter<T>? = null
         set(value) {
             field = value
-            if (binding != null && value != null) binding!!.picker.setWheelAdapter(value)
+            if (value != null) binding?.picker?.setWheelAdapter(value)
         }
 
 
@@ -70,11 +69,15 @@ class PickerDialog<T> : BottomSheetDialogFragment() {
     private var txtTitle: String? = null
     private var font: Typeface? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.dialog_picker, container, false)
-        binding?.txtDone = txtDone
-        binding?.txtCancel = txtCancel
-        binding?.txtTitle = txtTitle
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = DialogPickerBinding.inflate(inflater, container, false)
+        txtDone = getString(R.string.done)
+        txtCancel = getString(R.string.cancel)
+        txtTitle = getString(R.string.title)
         show = true
         return binding!!.root
     }
@@ -107,35 +110,38 @@ class PickerDialog<T> : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (binding != null) {
-            setTextSize(binding!!.tvDone, if (size > 2) size - 2f else size)
-            setTextSize(binding!!.tvCancel, if (size > 2) size - 2f else size)
-            setTextSize(binding!!.tvTitle, if (size > 2) size - 2f else size)
+        binding?.let {
+            setTextSize(it.tvDone, if (size > 2) size - 2f else size)
+            setTextSize(it.tvCancel, if (size > 2) size - 2f else size)
+            setTextSize(it.tvTitle, if (size > 2) size - 2f else size)
 
             if (font != null) {
-                binding!!.tvDone.setTypeface(font, Typeface.NORMAL)
-                binding!!.tvCancel.setTypeface(font, Typeface.NORMAL)
-                binding!!.tvTitle.setTypeface(font, Typeface.NORMAL)
+                it.tvDone.setTypeface(font, Typeface.NORMAL)
+                it.tvCancel.setTypeface(font, Typeface.NORMAL)
+                it.tvTitle.setTypeface(font, Typeface.NORMAL)
             }
 
-            if (adapter != null) binding!!.picker.setWheelAdapter(adapter)
+            if (adapter != null) it.picker.setWheelAdapter(adapter)
 
-            binding!!.picker.setLoop(loop)
-            binding!!.picker.setWheelSize(wheelSize)
-            binding!!.picker.skin = WheelView.Skin.Holo
-            binding!!.picker.style = style
-            binding!!.picker.setWheelData(data)
+            it.picker.setLoop(loop)
+            it.picker.setWheelSize(wheelSize)
+            it.picker.skin = WheelView.Skin.Holo
+            it.picker.style = style
+            it.picker.setWheelData(data)
 
             if (position > -1)
-                binding!!.picker.selection = position
+                it.picker.selection = position
 
-            binding!!.btnDone.setOnClickListener {
-                listener!!.onDone(binding!!.picker.currentPosition, binding!!.picker.selectionItem as T)
+            it.btnDone.setOnClickListener { _ ->
+                listener?.onDone(
+                    it.picker.currentPosition,
+                    it.picker.selectionItem as T
+                )
                 dismiss()
             }
 
-            binding!!.btnCancel.setOnClickListener {
-                listener!!.onCancel()
+            it.btnCancel.setOnClickListener {
+                listener?.onCancel()
                 dismiss()
             }
         }

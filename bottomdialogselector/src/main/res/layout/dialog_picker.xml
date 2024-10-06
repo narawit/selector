@@ -1,102 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragment_history_menu_bottom"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:orientation="vertical"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-    <data>
-
-        <variable
-            name="txtTitle"
-            type="String" />
-
-        <variable
-            name="txtCancel"
-            type="String" />
-
-        <variable
-            name="txtDone"
-            type="String" />
-    </data>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/fragment_history_menu_bottom"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/ll_btn"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#ffffff"
-        android:orientation="vertical"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
-            android:id="@+id/ll_btn"
+        <FrameLayout
+            android:id="@+id/btn_cancel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <FrameLayout
-                android:id="@+id/btn_cancel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3">
-
-                <TextView
-                    android:id="@+id/tv_cancel"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="8dp"
-                    android:gravity="center"
-                    android:text='@{(txtCancel != null) ? txtCancel : @string/cancel,default = @string/cancel}'
-                    android:textColor="#1662ee"
-                    android:textStyle="bold" />
-            </FrameLayout>
+            android:layout_weight="0.3">
 
             <TextView
-                android:id="@+id/tv_title"
-                android:layout_width="0dp"
+                android:id="@+id/tv_cancel"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_margin="8dp"
                 android:gravity="center"
-                android:text='@{(txtTitle != null) ? txtTitle : @string/title,default = @string/title}'
-                android:textAlignment="center"
-                android:textColor="#000000"
+                android:text="@string/cancel"
+                android:textColor="#1662ee"
                 android:textStyle="bold" />
+        </FrameLayout>
 
-            <FrameLayout
-                android:id="@+id/btn_done"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3">
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/title"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tv_done"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="8dp"
-                    android:gravity="center"
-                    android:text='@{(txtDone != null) ? txtDone : @string/done,default = @string/done}'
-                    android:textColor="#1662ee"
-                    android:textStyle="bold" />
-            </FrameLayout>
-        </LinearLayout>
-
-        <com.wx.wheelview.widget.NestedScrollView
+        <FrameLayout
+            android:id="@+id/btn_done"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ll_btn">
+            android:layout_weight="0.3">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/tv_done"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:gravity="center"
+                android:text="@string/done"
+                android:textColor="#1662ee"
+                android:textStyle="bold" />
+        </FrameLayout>
+    </LinearLayout>
 
-                <com.wx.wheelview.widget.WheelView
-                    android:id="@+id/picker"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-        </com.wx.wheelview.widget.NestedScrollView>
+    <com.wx.wheelview.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_btn">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.wx.wheelview.widget.WheelView
+                android:id="@+id/picker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </com.wx.wheelview.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
